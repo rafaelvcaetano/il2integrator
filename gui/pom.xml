@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>gui</artifactId>
+    <version>1.0</version>
+
+    <parent>
+        <groupId>me.magnum.il2integrator</groupId>
+        <artifactId>il2integrator</artifactId>
+        <version>1.0</version>
+    </parent>
+
+    <build>
+        <finalName>gui</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <finalName>il2integrator</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <archive>
+                        <manifest>
+                            <mainClass>me.magnum.il2mapintegrator.gui.Main</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                <artifactId>launch4j-maven-plugin</artifactId>
+                <version>1.7.21</version>
+                <executions>
+                    <execution>
+                        <id>l4j-gui</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>launch4j</goal>
+                        </goals>
+                        <configuration>
+                            <infile>${project.basedir}/gen_exe_gui.xml</infile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>me.magnum.il2integrator</groupId>
+            <artifactId>core</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>me.magnum.il2integrator</groupId>
+            <artifactId>career</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>me.magnum.il2integrator</groupId>
+            <artifactId>pwcg</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>me.magnum.il2integrator</groupId>
+            <artifactId>http</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>me.magnum.il2integrator</groupId>
+            <artifactId>udp</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+</project>
