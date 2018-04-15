@@ -70,22 +70,22 @@
         </dependency>
         <dependency>
             <groupId>me.magnum.il2integrator</groupId>
-            <artifactId>career</artifactId>
+            <artifactId>service-career</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>me.magnum.il2integrator</groupId>
-            <artifactId>pwcg</artifactId>
+            <artifactId>service-pwcg</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>me.magnum.il2integrator</groupId>
-            <artifactId>http</artifactId>
+            <artifactId>interface-http</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>me.magnum.il2integrator</groupId>
-            <artifactId>udp</artifactId>
+            <artifactId>interface-udp</artifactId>
             <version>1.0</version>
         </dependency>
     </dependencies>
