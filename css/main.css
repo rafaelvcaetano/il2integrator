@@ -1,0 +1,50 @@
+@font-face {
+    font-family: Futura;
+    src: url("../fonts/FuturaPTLight.woff") format("woff"),
+         url("../fonts/FuturaPTLight.ttf")  format("truetype");
+}
+
+hr {
+    border-color: grey;
+}
+
+.dark-bg {
+    background-color: #212121;
+}
+.text-white {
+    color: white;
+}
+
+.entry {
+}
+
+.entry * {
+    color: white;
+    font-size: 14pt;
+}
+
+.section-title {
+    font-size: 36pt;
+    line-height: 40pt;
+}
+
+.logo {
+    max-width: 100%;
+}
+
+.font-century-gothic {
+    font-family: "Futura", sans-serif;
+}
+
+#title-app {
+    font-family: "Futura", sans-serif;
+    color: white;
+    font-size: 60pt;
+    letter-spacing: 3px;
+}
+
+#play-store-logo {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+}
