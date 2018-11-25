@@ -14,6 +14,7 @@ import java.util.List;
 
 import me.magnum.il2mapintegrator.core.Logger;
 import me.magnum.il2mapintegrator.core.entities.Campaign;
+import me.magnum.il2mapintegrator.core.entities.Mission;
 import me.magnum.il2mapintegrator.core.entities.Point;
 import me.magnum.il2mapintegrator.core.entities.Route;
 
@@ -98,7 +99,7 @@ public class CareerDatabase {
 		return careers;
 	}
 
-	public Route getMission(int careerId) {
+	public Mission getMission(int careerId) {
 		if (!this.isDatabaseOpen()) {
 			Logger.e("No database connection open");
 			return null;
@@ -121,7 +122,7 @@ public class CareerDatabase {
 			if (map == null || playerId == -1)
 				return null;
 
-			PreparedStatement routeQuery = this.connection.prepareStatement("SELECT route FROM mission WHERE careerId = ? AND (" +
+			PreparedStatement routeQuery = this.connection.prepareStatement("SELECT route, date FROM mission WHERE careerId = ? AND (" +
 					"pilot0 = ? OR " +
 					"pilot1 = ? OR " +
 					"pilot2 = ? OR " +
@@ -141,9 +142,13 @@ public class CareerDatabase {
 			ResultSet results = routeQuery.executeQuery();
 
 			Route route = null;
+			List<Point> frontline = null;
 			if (results.next()) {
 				String routeData = results.getString("route");
+				String date = results.getString("date");
+
 				List<Point> waypoints = RouteParser.parseRoute(routeData);
+				frontline = FrontlineProvider.getFrontline(map, date);
 
 				route = new Route();
 				route.map = map;
@@ -151,7 +156,11 @@ public class CareerDatabase {
 				route.destroy = new ArrayList<>();
 				route.defend = new ArrayList<>();
 			}
-			return route;
+
+			Mission mission = new Mission();
+			mission.route = route;
+			mission.frontline = frontline;
+			return mission;
 		} catch (SQLException e) {
 			Logger.e(e);
 		}

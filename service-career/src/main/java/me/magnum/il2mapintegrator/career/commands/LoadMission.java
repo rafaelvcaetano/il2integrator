@@ -2,14 +2,13 @@ package me.magnum.il2mapintegrator.career.commands;
 
 import java.util.Map;
 
-import me.magnum.il2mapintegrator.core.ErrorCodes;
-import me.magnum.il2mapintegrator.core.Logger;
 import me.magnum.il2mapintegrator.career.CareerDatabase;
 import me.magnum.il2mapintegrator.career.DatabaseException;
+import me.magnum.il2mapintegrator.core.ErrorCodes;
+import me.magnum.il2mapintegrator.core.Logger;
 import me.magnum.il2mapintegrator.core.commands.Command;
 import me.magnum.il2mapintegrator.core.entities.Mission;
 import me.magnum.il2mapintegrator.core.entities.Response;
-import me.magnum.il2mapintegrator.core.entities.Route;
 
 public class LoadMission extends Command {
 	private static final String ARG_CAMPAIGN = "campaign";
@@ -43,13 +42,11 @@ public class LoadMission extends Command {
 			Logger.e(e);
 			return null;
 		}
-		Route route = this.database.getMission(career);
+		Mission loadedMission = this.database.getMission(career);
 		this.database.close();
 
-		Mission loadedMission = new Mission();
 		loadedMission.result = ErrorCodes.SUCCESS;
 		loadedMission.message = "Success";
-		loadedMission.route = route;
 
 		return loadedMission;
 	}
