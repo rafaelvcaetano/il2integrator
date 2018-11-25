@@ -2,6 +2,7 @@ package me.magnum.il2mapintegrator.gui;
 
 import java.awt.AWTException;
 import java.awt.Button;
+import java.awt.Checkbox;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
@@ -18,7 +19,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +39,7 @@ public class IL2IntegratorWindow extends JFrame {
 	private LaunchActionListener actionListener;
 
 	private Label ipLabel;
+	private Checkbox steamCheckBox;
 	private Button il2Button;
 	private Button pwcgButton;
 
@@ -54,7 +55,7 @@ public class IL2IntegratorWindow extends JFrame {
 		GridBagLayout layout = new GridBagLayout();
 
 		JPanel mainPanel = new JPanel(layout);
-		mainPanel.setPreferredSize(new Dimension(300, 130));
+		mainPanel.setPreferredSize(new Dimension(300, 150));
 
 		Label ipInfoLabel = new Label("IP Address:", Label.CENTER);
 		GridBagConstraints ipInfoLabelConstrains = new GridBagConstraints();
@@ -68,8 +69,15 @@ public class IL2IntegratorWindow extends JFrame {
 		ipConstraints.weightx = 1f;
 		ipConstraints.gridy = 1;
 		ipConstraints.gridwidth = 2;
-		ipConstraints.insets = new Insets(0, 0, 10, 0);
+		ipConstraints.insets = new Insets(0, 0, 5, 0);
 		ipConstraints.fill = GridBagConstraints.BOTH;
+
+		this.steamCheckBox = new Checkbox("Launch IL-2 from Steam");
+		GridBagConstraints steamConstraints = new GridBagConstraints();
+		steamConstraints.weightx = 1f;
+		steamConstraints.gridy = 2;
+		steamConstraints.gridwidth = 2;
+		steamConstraints.insets = new Insets(0, 0, 5, 0);
 
 		Font buttonFont = new Font("Arial", Font.PLAIN, 14);
 		this.il2Button = new Button("Launch IL-2");
@@ -79,7 +87,7 @@ public class IL2IntegratorWindow extends JFrame {
 		il2ButtonConstraints.weightx = 0.5f;
 		il2ButtonConstraints.weighty = 1f;
 		il2ButtonConstraints.gridx = 0;
-		il2ButtonConstraints.gridy = 2;
+		il2ButtonConstraints.gridy = 3;
 		il2ButtonConstraints.fill = GridBagConstraints.BOTH;
 
 		this.pwcgButton = new Button("Launch PWCG");
@@ -89,11 +97,12 @@ public class IL2IntegratorWindow extends JFrame {
 		pwcgButtonConstraints.weightx = 0.5f;
 		pwcgButtonConstraints.weighty = 1f;
 		pwcgButtonConstraints.gridx = 1;
-		pwcgButtonConstraints.gridy = 2;
+		pwcgButtonConstraints.gridy = 3;
 		pwcgButtonConstraints.fill = GridBagConstraints.BOTH;
 
 		mainPanel.add(ipInfoLabel, ipInfoLabelConstrains);
 		mainPanel.add(this.ipLabel, ipConstraints);
+		mainPanel.add(this.steamCheckBox, steamConstraints);
 		mainPanel.add(this.il2Button, il2ButtonConstraints);
 		mainPanel.add(this.pwcgButton, pwcgButtonConstraints);
 
@@ -113,6 +122,8 @@ public class IL2IntegratorWindow extends JFrame {
 		this.pack();
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
+
+		this.il2Button.requestFocusInWindow();
 	}
 
 	private void setupTray() {
@@ -175,6 +186,10 @@ public class IL2IntegratorWindow extends JFrame {
 
 	public void setLaunchPWCGEnabled(boolean enabled) {
 		this.pwcgButton.setEnabled(enabled);
+	}
+
+	public boolean launchFromSteam() {
+		return this.steamCheckBox.getState();
 	}
 
 	public void showErrorMessage(String error) {

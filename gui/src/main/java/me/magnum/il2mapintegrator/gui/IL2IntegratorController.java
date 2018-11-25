@@ -2,7 +2,9 @@ package me.magnum.il2mapintegrator.gui;
 
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import me.magnum.il2mapintegrator.core.Logger;
 
@@ -43,7 +45,10 @@ public class IL2IntegratorController implements IL2IntegratorWindow.LaunchAction
 
 	@Override
 	public void onLaunchIL2() {
-		if (!this.commandInterface.startApplication("career"))
+		Map<String, String> args = new HashMap<>();
+		args.put("source", this.window.launchFromSteam() ? "steam" : "standalone");
+
+		if (!this.commandInterface.startApplication("career", args))
 			this.window.showErrorMessage("Could not launch IL-2");
 	}
 

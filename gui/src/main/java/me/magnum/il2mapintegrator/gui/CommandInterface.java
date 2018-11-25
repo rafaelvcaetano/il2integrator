@@ -2,6 +2,7 @@ package me.magnum.il2mapintegrator.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import me.magnum.il2mapintegrator.core.ErrorCodes;
 import me.magnum.il2mapintegrator.core.IL2Integrator;
@@ -41,9 +42,14 @@ public class CommandInterface {
 	}
 
 	public boolean startApplication(String serviceName) {
+		return startApplication(serviceName, null);
+	}
+
+	public boolean startApplication(String serviceName, Map<String, String> args) {
 		CommandRequest request = new CommandRequest();
 		request.service = serviceName;
 		request.command = "start";
+		request.args = args;
 
 		Response response = this.il2Integrator.processCommand(request);
 		return response.result == ErrorCodes.SUCCESS;
