@@ -71,7 +71,7 @@
         <dependency>
             <groupId>me.magnum.il2integrator</groupId>
             <artifactId>service-career</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
         </dependency>
         <dependency>
             <groupId>me.magnum.il2integrator</groupId>

@@ -8,6 +8,7 @@ public final class MapDataMapper {
 		dataMapper.put("BOM", "moscow");
 		dataMapper.put("BOS", "stalingrad");
 		dataMapper.put("BOK", "kuban");
+		dataMapper.put("BOBP", "rheinland");
 	}
 
 	private MapDataMapper() {

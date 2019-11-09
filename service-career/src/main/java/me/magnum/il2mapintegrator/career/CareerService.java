@@ -53,11 +53,11 @@ public class CareerService implements IService {
 
 	@Override
 	public int versionCode() {
-		return 1;
+		return 2;
 	}
 
 	@Override
 	public String version() {
-		return "1.0";
+		return "1.1";
 	}
 }
