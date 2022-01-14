@@ -9,8 +9,14 @@ import java.util.Comparator;
 public class MissionLister {
 	private static final String MISSION_EXTENSION = ".mission";
 
+	private final PWCGPathProvider pathProvider;
+
+	public MissionLister(PWCGPathProvider pathProvider) {
+		this.pathProvider = pathProvider;
+	}
+
 	public String getNextMissionForCampaign(final String campaign) {
-		File missionDir = new File("data/Missions");
+		File missionDir = new File(this.pathProvider.getMissionsDirectoryPath());
 		if (!missionDir.isDirectory())
 			return null;
 

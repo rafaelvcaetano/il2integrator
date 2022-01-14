@@ -9,15 +9,20 @@ import me.magnum.il2mapintegrator.core.Logger;
 import me.magnum.il2mapintegrator.core.commands.Command;
 import me.magnum.il2mapintegrator.core.entities.Response;
 import me.magnum.il2mapintegrator.core.utils.StreamConsumer;
+import me.magnum.il2mapintegrator.pwcg.PWCGPathProvider;
 
 public class StartPWCG extends Command {
-	public StartPWCG() {
+
+	private final PWCGPathProvider pathProvider;
+
+	public StartPWCG(PWCGPathProvider pathProvider) {
 		super("start");
+		this.pathProvider = pathProvider;
 	}
 
 	@Override
 	public Response execute(Map<String, String> args) {
-		File pwcgDir = new File("PWCGCampaign");
+		File pwcgDir = new File(this.pathProvider.getRootPath());
 		if (!pwcgDir.isDirectory()) {
 			Response response = new Response();
 			response.result = ErrorCodes.ERR_COMMAND_ERROR;
@@ -41,8 +46,8 @@ public class StartPWCG extends Command {
 	}
 
 	private void launchPWCG(File runDir) throws IOException {
-		Process process = Runtime.getRuntime().exec("PWCGCampaign/PWCGBos.exe", null, runDir);
-		// Input and error streams must be consumed. Otherwise the application will hang
+		Process process = Runtime.getRuntime().exec(this.pathProvider.getExecutablePath(), null, runDir);
+		// Input and error streams must be consumed. Otherwise, the application will hang
 		new StreamConsumer(process.getInputStream()).start();
 		new StreamConsumer(process.getErrorStream()).start();
 	}

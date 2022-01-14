@@ -10,15 +10,20 @@ import me.magnum.il2mapintegrator.core.entities.Campaign;
 import me.magnum.il2mapintegrator.core.entities.CampaignList;
 import me.magnum.il2mapintegrator.core.entities.Response;
 import me.magnum.il2mapintegrator.pwcg.FileUtils;
+import me.magnum.il2mapintegrator.pwcg.PWCGPathProvider;
 
 public class ListCampaigns extends Command {
-	public ListCampaigns() {
+
+	private final PWCGPathProvider pathProvider;
+
+	public ListCampaigns(PWCGPathProvider pathProvider) {
 		super("campaigns");
+		this.pathProvider = pathProvider;
 	}
 
 	@Override
 	public Response execute(Map<String, String> args) {
-		File campaignsDir = new File("PWCGCampaign/Campaigns");
+		File campaignsDir = new File(pathProvider.getCampaignsDirectoryPath());
 		if (!campaignsDir.isDirectory())
 			return null;
 

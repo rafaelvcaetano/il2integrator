@@ -19,6 +19,7 @@ import me.magnum.il2mapintegrator.core.entities.Point;
 import me.magnum.il2mapintegrator.core.entities.Response;
 import me.magnum.il2mapintegrator.core.entities.Route;
 import me.magnum.il2mapintegrator.pwcg.MissionLister;
+import me.magnum.il2mapintegrator.pwcg.PWCGPathProvider;
 
 public class LoadMission extends Command {
 	private static final HashMap<String, String> translator = new HashMap<>();
@@ -28,15 +29,17 @@ public class LoadMission extends Command {
 
 	private static final String ARG_CAMPAIGN = "campaign";
 
-	private MissionLister missionLister;
-	private Pattern mapPattern;
-	private Pattern leaderPattern;
+	private final MissionLister missionLister;
+	private final PWCGPathProvider pathProvider;
+	private final Pattern mapPattern;
+	private final Pattern leaderPattern;
 
-	public LoadMission(MissionLister missionLister) {
+	public LoadMission(MissionLister missionLister, PWCGPathProvider pathProvider) {
 		super("mission");
 		this.missionLister = missionLister;
+		this.pathProvider = pathProvider;
 		this.mapPattern = Pattern.compile("GuiMap = \"(.+?)(-.*|\");");
-		this.leaderPattern = Pattern.compile("Plane\\r\\n\\{.*?LinkTrId = (\\d*);", Pattern.DOTALL);
+		this.leaderPattern = Pattern.compile("Plane\\r?\\n *\\{.*?LinkTrId = (\\d*);", Pattern.DOTALL);
 	}
 
 	@Override
@@ -46,7 +49,8 @@ public class LoadMission extends Command {
 			return null;
 
 		String mission = this.missionLister.getNextMissionForCampaign(campaign);
-		File missionFile = new File("data/Missions/" + mission);
+		File missionDirectory = new File(this.pathProvider.getMissionsDirectoryPath());
+		File missionFile = new File(missionDirectory, mission);
 
 		// If the mission file was not found, there probably isn't a mission for the target campaign.
 		// Return a mission response without a route.
@@ -132,7 +136,7 @@ public class LoadMission extends Command {
 	}
 
 	private List<Point> getPoints(String data, String leaderID) {
-		Pattern waypointPattern = Pattern.compile("MCU_Waypoint\\r\\n\\{[^}]*?Objects = \\[" + leaderID + "].*?XPos = ([0-9.]+).*?ZPos = ([0-9.]+);.*?}", Pattern.DOTALL);
+		Pattern waypointPattern = Pattern.compile("MCU_Waypoint\\r?\\n *\\{[^}]*?Objects = \\[" + leaderID + "].*?XPos = ([0-9.]+).*?ZPos = ([0-9.]+);.*?}", Pattern.DOTALL);
 		Matcher waypointMatcher = waypointPattern.matcher(data);
 
 		ArrayList<Point> waypoints = new ArrayList<>();
@@ -157,7 +161,6 @@ public class LoadMission extends Command {
 		return waypoints;
 	}
 
-	@SuppressWarnings("SuspiciousNameCombination")
 	private Point locationToPoint(float x, float y) {
 		Point point = new Point();
 		// This is intentional. Values are represented differently in the mission editor
