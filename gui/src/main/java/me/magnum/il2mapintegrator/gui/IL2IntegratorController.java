@@ -1,6 +1,8 @@
 package me.magnum.il2mapintegrator.gui;
 
-import java.net.Inet4Address;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.List;
@@ -9,8 +11,8 @@ import java.util.Map;
 import me.magnum.il2mapintegrator.core.Logger;
 
 public class IL2IntegratorController implements IL2IntegratorWindow.LaunchActionListener {
-	private CommandInterface commandInterface;
-	private IL2IntegratorWindow window;
+	private final CommandInterface commandInterface;
+	private final IL2IntegratorWindow window;
 
 	public IL2IntegratorController(CommandInterface commandInterface) {
 		this.commandInterface = commandInterface;
@@ -29,9 +31,10 @@ public class IL2IntegratorController implements IL2IntegratorWindow.LaunchAction
 
 	private void updateIp() {
 		try {
-			String ip = Inet4Address.getLocalHost().getHostAddress();
+			InetAddress localAddress = getLocalHostLanAddress();
+			String ip = localAddress.getHostAddress();
 			this.window.setIp(ip);
-		} catch (UnknownHostException e) {
+		} catch (Exception e) {
 			Logger.e(e);
 			this.window.setIp("Error finding IP");
 		}
@@ -41,6 +44,14 @@ public class IL2IntegratorController implements IL2IntegratorWindow.LaunchAction
 		List<String> services = this.commandInterface.getActiveServices();
 		this.window.setLaunchIL2Enabled(services.contains("career"));
 		this.window.setLaunchPWCGEnabled(services.contains("pwcg"));
+	}
+
+	private InetAddress getLocalHostLanAddress() throws UnknownHostException, SocketException {
+		try (final DatagramSocket socket = new DatagramSocket()) {
+			// Create a random socket to see which network interface would actually be used on a network request. The IP doesn't need to be reachable and no connection is made
+			socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+			return socket.getLocalAddress();
+		}
 	}
 
 	@Override
